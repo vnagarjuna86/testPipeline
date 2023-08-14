@@ -70,7 +70,7 @@ pipeline {
                     }
                 }
             }
-            else:
+            else
                 execute stage('Skip matrix') {
                     steps {
                         echo "Running Skip matrix or other steps ${BASE_VERSION}"
