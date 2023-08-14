@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -14,32 +13,6 @@ pipeline {
             description: 'Deploy fresh cluster'
         )
     }
-
-    stages {
-        stage('Set variables') {
-            steps {
-                echo "Running Set variables or other steps"
-            }
-        }
-
-        stage('Build Jars') {
-            steps {
-                echo "Running Build your jars or other steps"
-            }
-        }
-
-        stage('Build and Push Containers') {
-            steps {
-                echo "Running Build and push your containers or other steps"
-            }
-        }
-
-        stage('Promote') {
-            steps {
-                echo "Running Perform promotion steps or other steps"
-            }
-        }
-
         stage('Fresh Cluster') {
             when {
                 expression {
