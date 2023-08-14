@@ -59,7 +59,6 @@ pipeline {
                     stage ('Check license') {
                         steps {
                             script {
-                                def amiId = steps('Fetch AMI').amiId // Access amiId from the previous stage
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
                             }
