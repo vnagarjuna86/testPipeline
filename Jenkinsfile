@@ -46,19 +46,38 @@ pipeline {
                 }
             }
             stages {
-                stage ('Check license') {
-                    steps {
-                        echo "Running Check license steps"
-                    }
-                }
-                stage ('Check license 2') {
-                    steps {
-                        echo "Running Check license 2 steps"
-                    }
-                }
-                stage ('Check license 3') {
-                    steps {
-                        echo "Running Check license 3 steps"
+                stage('Check license, 2 and 3 in parallel') {
+                    parallel {
+                        stage ('Check license') {
+                            when {
+                                expression {
+                                    params.BASE_VERSION == "ALL" || params.BASE_VERSION == "11" || params.BASE_VERSION == "10" || params.BASE_VERSION == "9" || params.BASE_VERSION == "8" || params.BASE_VERSION == "7" || params.BASE_VERSION == "3"
+                                }
+                            }
+                            steps {
+                                echo "Running Check license steps"
+                            }
+                        }
+                        stage ('Check license 2') {
+                            when {
+                                expression {
+                                    params.BASE_VERSION == "ALL" || params.BASE_VERSION == "11" || params.BASE_VERSION == "10" || params.BASE_VERSION == "9" || params.BASE_VERSION == "8" || params.BASE_VERSION == "7" || params.BASE_VERSION == "3"
+                                }
+                            }
+                            steps {
+                                echo "Running Check license 2 steps"
+                            }
+                        }
+                        stage ('Check license 3') {
+                            when {
+                                expression {
+                                    params.BASE_VERSION == "ALL" || params.BASE_VERSION == "11" || params.BASE_VERSION == "10" || params.BASE_VERSION == "9" || params.BASE_VERSION == "8" || params.BASE_VERSION == "7" || params.BASE_VERSION == "3"
+                                }
+                            }
+                            steps {
+                                echo "Running Check license 3 steps"
+                            }
+                        }
                     }
                 }
             }
