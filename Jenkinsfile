@@ -13,6 +13,8 @@ pipeline {
             description: 'Deploy fresh cluster'
         )
     }
+
+    stages {
         stage('Fresh Cluster') {
             when {
                 expression {
