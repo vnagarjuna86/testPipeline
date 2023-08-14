@@ -103,9 +103,11 @@ pipeline {
                                 def amiId = amiMap[BASE_VERSION]*/
                                 def amiId = amiMap[BASE_VERSION]
                                 echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
+                                // Set the amiId as an environment variable
+                                env.AMI_ID = amiId
                                 sh '''
                                     pwd
-                                    echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
+                                    echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
                                 '''
                             }
                         }
