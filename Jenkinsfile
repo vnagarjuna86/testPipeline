@@ -28,8 +28,7 @@ pipeline {
                         values '11', '10', '9', '8', '7', '3'
                     }
                 }
-                stages {
-                    def amiMap = [
+                def amiMap = [
                             '11': 'ami-0f2103a4b8097a560',
                             '10': 'ami-07c628e683bb46bf3',
                             '9': 'ami-0d40cc67849b82059',
@@ -37,8 +36,8 @@ pipeline {
                             '7': 'ami-0a45b299774e0b9bc',
                             '3': 'ami-0a45b299994e0b9bc'
                     ]
-                    def amiId = amiMap[BASE_VERSION]
-                    
+                def amiId = amiMap[BASE_VERSION]
+                stages {
                      stage('Fetch AMI') {
                         steps {
                             script {
@@ -83,8 +82,7 @@ pipeline {
                     params.BASE_VERSION != "ALL"
                 }
             }
-            stages {
-                 def amiMap = [
+            def amiMap = [
                             '11': 'ami-0f2103a4b8097a560',
                             '10': 'ami-07c628e683bb46bf3',
                             '9': 'ami-0d40cc67849b82059',
@@ -92,7 +90,8 @@ pipeline {
                             '7': 'ami-0a45b299774e0b9bc',
                             '3': 'ami-0a45b299994e0b9bc'
                     ]
-                 def amiId = amiMap[BASE_VERSION]
+            def amiId = amiMap[BASE_VERSION]
+            stages {
                  stage('Fetch AMI') {
                         steps {
                             script {
