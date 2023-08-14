@@ -1,4 +1,4 @@
-// Pipeline to build a release candidate.
+@Library('fwd-jenkins-libraries') _
 
 pipeline {
     agent any
@@ -19,29 +19,24 @@ pipeline {
     stages {
         stage('Set variables') {
             steps {
-                // Set your variables here
                 echo "Running Set variables or other steps"
-
             }
         }
 
         stage('Build Jars') {
             steps {
-                // Build your jars
                 echo "Running Build your jars or other steps"
             }
         }
 
         stage('Build and Push Containers') {
             steps {
-                // Build and push your containers
                 echo "Running Build and push your containers or other steps"
             }
         }
 
         stage('Promote') {
             steps {
-                // Perform promotion steps
                 echo "Running Perform promotion steps or other steps"
             }
         }
@@ -49,82 +44,59 @@ pipeline {
         stage('Build Releases') {
             steps {
                 script {
-                    if (params.BASE_VERSION == 'ALL') {
-                        def baseVersions = ["11", "10", "9", "8", "7", "3"]
-                        parallel baseVersions.collectEntries { version ->
-                            ["Build $version": {
-                                echo "buildRelease(version, params.DEPLOY)"
-                            }]
-                        }
-                    } else {
-                        echo "buildRelease(params.BASE_VERSION, params.DEPLOY)"
+                    def baseVersions = params.BASE_VERSION == 'ALL' ?
+                                      ["11", "10", "9", "8", "7", "3"] :
+                                      [params.BASE_VERSION]
+
+                    parallel baseVersions.collectEntries { version ->
+                        ["Build and Test $version": {
+                            buildAndTestRelease(version, params.DEPLOY)
+                        }]
                     }
                 }
             }
         }
 
-        stage('Functional Test [Others]') {
-            steps {
-                // Run functional tests or other steps
-                echo "Running functional tests or other steps"
-            }
-        }
-
         stage('Declarative: Post Actions') {
             steps {
-                // Perform post actions
                 echo "Running Perform post actions or other steps"
             }
         }
     }
 }
 
-def buildRelease(version, deploy) {
-    stage("Build Release $version") {
-        // Execute the stages for the specified version
-        // Fresh Cluster, Check license, Create VMs on AWS, etc.
+def buildAndTestRelease(version, deploy) {
+    stage("Build and Test Release $version") {
         if (deploy) {
-            // Run stages only if DEPLOY parameter is true
-            echo "Building release for version $version"
-            // Add your stage executions here
-
+            echo "Building and testing release for version $version"
+            
+            // Build release stages
             stage('Fresh Cluster') {
                 steps {
-                    // Fresh Cluster logic
-                    echo "Running Fresh Cluster logic or other steps"
+                    echo "Running Fresh Cluster logic or other steps for version $version"
                 }
             }
 
             stage('Check license') {
                 steps {
-                    // Check license logic
-                    echo "Running Check license logic or other steps"
+                    echo "Running Check license logic or other steps for version $version"
                 }
             }
 
             stage('Create VMs on AWS') {
                 steps {
-                    // Create VMs logic
-                    echo "Running Create VMs logic or other steps"
-                }
-            }
-
-            stage('Download airgap bundle') {
-                steps {
-                    // Download airgap bundle
-                    echo "Running Download airgap bundle or other steps"
-                }
-            }
-
-            stage('Install KOTS') {
-                steps {
-                    // Install KOTS
-                    echo "Running Install KOTS or other steps"
+                    echo "Running Create VMs logic or other steps for version $version"
                 }
             }
 
             // Add more stages as needed
 
+            // Functional test stage
+            stage('Functional Test [Others]') {
+                steps {
+                    echo "Running functional tests or other steps for version $version"
+                }
+            }
         } else {
             echo "Not deploying for version $version"
         }
