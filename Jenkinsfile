@@ -1,82 +1,69 @@
 pipeline {
     agent any
-    
+
     parameters {
-        choice(name: 'VERSION', choices: ['all', '1', '2', '3', '4', '5'], description: 'Select the version')
+        choice(
+            name: 'BASE_VERSION',
+            choices: ["ALL", "11", "10", "9", "8", "7", "3"],
+            description: 'Select base version(s) to trigger'
+        )
+        booleanParam(
+            name: 'DEPLOY',
+            defaultValue: true,
+            description: 'Deploy fresh cluster'
+        )
     }
-    
+
     stages {
-        stage('Checkout') {
+        stage('Set variables') {
             steps {
-                echo "Checking out the repository"
-                // Add actual code to checkout your repository here
+                echo "Running Set variables or other steps"
             }
         }
-        
-        stage('Build') {
-            when {
-                expression {
-                    params.VERSION == 'all' || params.VERSION == '1'
-                }
-            }
+
+        stage('Build Jars') {
             steps {
-                echo "Building for version ${params.VERSION}"
-                // Add actual build steps here
+                echo "Running Build your jars or other steps"
             }
         }
-        
-        stage('Test') {
-            when {
-                expression {
-                    params.VERSION == 'all' || params.VERSION == '2'
-                }
-            }
+
+        stage('Build and Push Containers') {
             steps {
-                echo "Testing for version ${params.VERSION}"
-                // Add actual test steps here
+                echo "Running Build and push your containers or other steps"
             }
         }
-        
-        stage('Deploy') {
-            when {
-                expression {
-                    params.VERSION == 'all' || params.VERSION == '3'
-                }
-            }
+
+        stage('Promote') {
             steps {
-                echo "Deploying for version ${params.VERSION}"
-                // Add actual deployment steps here
+                echo "Running Perform promotion steps or other steps"
             }
         }
-        
-        stage('Other Stages') {
-            when {
-                expression {
-                    params.VERSION == 'all' || params.VERSION == '4'
-                }
-            }
-            steps {
-                echo "Running other stages for version ${params.VERSION}"
-                // Add other stages' steps here
-            }
-        }
-        
-        stage('Cleanup') {
-            when {
-                expression {
-                    params.VERSION == 'all' || params.VERSION == '5'
-                }
-            }
-            steps {
-                echo "Cleaning up for version ${params.VERSION}"
-                // Add cleanup steps here
+
+        stage('Fresh Cluster') {
+            stages {
+                    stage ('Check license') {
+                        steps {
+                            echo "Running Perform promotion steps or other steps"
+                        }
+                    }
+                    stage ('Check license 2') {
+                        steps {
+                            echo "Running Check license 2 or other steps"
+                        }
+                    }
+                    stage ('Check license 3') {
+                        steps {
+                            echo "Running Check license 3 or other steps"
+                        }
+                    }
             }
         }
-    }
-    
+    }    
     post {
-        always {
-            echo "Pipeline completed for version ${params.VERSION}"
+    always {
+        script {
+            print ("Fresh Cluster is not deployed.")
+            }
         }
     }
 }
