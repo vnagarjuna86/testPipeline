@@ -50,7 +50,12 @@ pipeline {
                     axis {
                         name 'BASE_VERSION'
                         values 'ALL', '11', '10', '9', '8', '7', '3' 
-                    }
+                        condition {
+                            expression {
+                                env('BASE_VERSION') == params.BASE_VERSION
+                                }
+                            }
+                         }
                 }
                 stages {
                     /* stage('Check license, 2 and 3') {
