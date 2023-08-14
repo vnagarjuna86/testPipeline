@@ -42,7 +42,7 @@ pipeline {
         stage('Fresh Cluster') {
             when {
                 expression {
-                    params.BASE_VERSION == "ALL" || params.BASE_VERSION in ["11", "10", "9", "8", "7", "3"]
+                    params.BASE_VERSION == "ALL"
                 }
             }
             matrix {
@@ -55,34 +55,36 @@ pipeline {
                 stages {
                     stage ('Check license') {
                         steps {
-                            echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
+                            echo "Running Check license steps for version ${BASE_VERSION}"
                         }
                     }
                     stage ('Check license 2') {
                         steps {
-                            echo "Running Check license 2 or other steps ${BASE_VERSION}"
+                            echo "Running Check license 2 steps for version ${BASE_VERSION}"
                         }
                     }
                     stage ('Check license 3') {
                         steps {
-                            echo "Running Check license 3 or other steps ${BASE_VERSION}"
+                            echo "Running Check license 3 steps for version ${BASE_VERSION}"
                         }
                     }
                 }
             }
-        }
-
-        stage('Skip matrix') {
-            when {
-                expression {
-                    params.BASE_VERSION != "ALL"
+            stages {
+                stage('Skip matrix') {
+                    when {
+                        expression {
+                            params.BASE_VERSION != "ALL" &&
+                            params.BASE_VERSION in ["11", "10", "9", "8", "7", "3"]
+                        }
+                    }
+                    steps {
+                        echo "Running Skip matrix steps for version ${BASE_VERSION}"
+                    }
                 }
             }
-            steps {
-                echo "Running Skip matrix or other steps ${params.BASE_VERSION}"
-            }
         }
-    }    
+    }
 
     post {
         always {
