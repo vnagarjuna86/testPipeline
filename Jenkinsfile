@@ -88,16 +88,16 @@ pipeline {
                                 ]
                                 def amiId = amiMap[BASE_VERSION]
                                 echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
-                                return amiId // Return amiId so it's accessible in subsequent stages
                             }
                         }
                 }
                 stage ('Check license') {
                     steps {
-                        script {
-                            def amiId = steps('Fetch AMI').amiId // Access amiId from the previous stage
-                            echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
+                        withEnv(["amiId=${amiId}"]) {
+                            script {
+                                echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
+                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
+                            }
                         }
                     }
                 }
