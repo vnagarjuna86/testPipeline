@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -74,6 +75,7 @@ pipeline {
                         steps {
                             echo "Running Check license 3 or other steps"
                         }
+                    }
                 }
             }
         }
@@ -82,9 +84,9 @@ pipeline {
         always {
             script {
                 if (params.BASE_VERSION == "ALL") {
-                    print("Fresh Cluster is not deployed for all versions.")
+                    print("Fresh Cluster is deployed for all versions.")
                 } else {
-                    print("Fresh Cluster is not deployed for version ${params.BASE_VERSION}.")
+                    print("Fresh Cluster is deployed for version ${params.BASE_VERSION}.")
                 }
             }
         }
