@@ -29,21 +29,20 @@ pipeline {
                     }
                 }
                 stages {
-                     stage ('Fetch AMI') {
+                     stage('Fetch AMI') {
                         steps {
-                            echo "Fetching AMI for ${BASE_VERSION}"
-                            if (params.BASE_VERSION == "11") {
-                                ami_id = "ami-0f2103a4b8097a560"
-                            } else if (params.BASE_VERSION == "10") {
-                                ami_id = "ami-07c628e683bb46bf3"
-                            } else if (params.BASE_VERSION == "9") {
-                                ami_id = "ami-0d40cc67849b82059"
-                            } else if (params.BASE_VERSION == "8") {
-                                ami_id = "ami-0d4a0d68ad7ea84d2"
-                            } else if (params.BASE_VERSION == "7") {
-                                ami_id = "ami-0a45b299774e0b9bc"
+                            script {
+                                def amiMap = [
+                                    '11': 'ami-0f2103a4b8097a560',
+                                    '10': 'ami-07c628e683bb46bf3',
+                                    '9': 'ami-0d40cc67849b82059',
+                                    '8': 'ami-0d4a0d68ad7ea84d2',
+                                    '7': 'ami-0a45b299774e0b9bc',
+                                    '3': 'ami-0a45b299994e0b9bc'
+                                ]
+                                def amiId = amiMap[BASE_VERSION]
+                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
                             }
-                            echo "AMI ID for ${BASE_VERSION} is ${ami_id}"
                         }
                     }
                     stage ('Check license') {
@@ -71,23 +70,22 @@ pipeline {
                 }
             }
             stages {
-                 stage ('Fetch AMI') {
+                 stage('Fetch AMI') {
                         steps {
-                            echo "Fetching AMI for ${BASE_VERSION}"
-                            if (params.BASE_VERSION == "11") {
-                                ami_id = "ami-0f2103a4b8097a560"
-                            } else if (params.BASE_VERSION == "10") {
-                                ami_id = "ami-07c628e683bb46bf3"
-                            } else if (params.BASE_VERSION == "9") {
-                                ami_id = "ami-0d40cc67849b82059"
-                            } else if (params.BASE_VERSION == "8") {
-                                ami_id = "ami-0d4a0d68ad7ea84d2"
-                            } else if (params.BASE_VERSION == "7") {
-                                ami_id = "ami-0a45b299774e0b9bc"
+                            script {
+                                def amiMap = [
+                                    '11': 'ami-0f2103a4b8097a560',
+                                    '10': 'ami-07c628e683bb46bf3',
+                                    '9': 'ami-0d40cc67849b82059',
+                                    '8': 'ami-0d4a0d68ad7ea84d2',
+                                    '7': 'ami-0a45b299774e0b9bc',
+                                    '3': 'ami-0a45b299994e0b9bc'
+                                ]
+                                def amiId = amiMap[BASE_VERSION]
+                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
                             }
-                            echo "AMI ID for ${BASE_VERSION} is ${ami_id}"
                         }
-                    }
+                }
                 stage ('Check license') {
                     steps {
                         echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
