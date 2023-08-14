@@ -7,7 +7,6 @@ pipeline {
             name: 'BASE_VERSION',
             choices: ["ALL", "11", "10", "9", "8", "7", "3"],
             description: 'Select base version(s) to trigger'
-            filterable: true // This allows users to search for options
         )
         booleanParam(
             name: 'DEPLOY',
