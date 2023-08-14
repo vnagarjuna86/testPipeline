@@ -45,38 +45,19 @@ pipeline {
                     params.BASE_VERSION == "ALL" || params.BASE_VERSION in ["11", "10", "9", "8", "7", "3"]
                 }
             }
-            stages {
-                stage('Check license, 2 and 3 in parallel') {
-                    parallel {
-                        stage ('Check license') {
-                            when {
-                                expression {
-                                    params.BASE_VERSION == "ALL" || params.BASE_VERSION == "11" || params.BASE_VERSION == "10" || params.BASE_VERSION == "9" || params.BASE_VERSION == "8" || params.BASE_VERSION == "7" || params.BASE_VERSION == "3"
-                                }
-                            }
-                            steps {
-                                echo "Running Check license steps"
-                            }
-                        }
-                        stage ('Check license 2') {
-                            when {
-                                expression {
-                                    params.BASE_VERSION == "ALL" || params.BASE_VERSION == "11" || params.BASE_VERSION == "10" || params.BASE_VERSION == "9" || params.BASE_VERSION == "8" || params.BASE_VERSION == "7" || params.BASE_VERSION == "3"
-                                }
-                            }
-                            steps {
-                                echo "Running Check license 2 steps"
-                            }
-                        }
-                        stage ('Check license 3') {
-                            when {
-                                expression {
-                                    params.BASE_VERSION == "ALL" || params.BASE_VERSION == "11" || params.BASE_VERSION == "10" || params.BASE_VERSION == "9" || params.BASE_VERSION == "8" || params.BASE_VERSION == "7" || params.BASE_VERSION == "3"
-                                }
-                            }
-                            steps {
-                                echo "Running Check license 3 steps"
-                            }
+            matrix {
+                axes {
+                    axis {
+                        name 'BASE_VERSION'
+                        values 'ALL', '11', '10', '9', '8', '7', '3'
+                    }
+                }
+                stages {
+                    stage('Check license, 2 and 3') {
+                        steps {
+                            echo "Running Check license steps for BASE_VERSION: ${BASE_VERSION}"
+                            echo "Running Check license 2 steps for BASE_VERSION: ${BASE_VERSION}"
+                            echo "Running Check license 3 steps for BASE_VERSION: ${BASE_VERSION}"
                         }
                     }
                 }
