@@ -50,7 +50,7 @@ pipeline {
         axes {
           axis {
             name 'BASE_VERSION'
-            values params.BASE_VERSION
+            values(params.BASE_VERSION)
           }
         }
         stages {
