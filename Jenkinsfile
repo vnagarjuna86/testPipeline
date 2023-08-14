@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     parameters {
         choice(
             name: 'BASE_VERSION',
@@ -13,32 +13,32 @@ pipeline {
             description: 'Deploy fresh cluster'
         )
     }
-
+    
     stages {
         stage('Set variables') {
             steps {
                 echo "Running Set variables or other steps"
             }
         }
-
+    
         stage('Build Jars') {
             steps {
                 echo "Running Build your jars or other steps"
             }
         }
-
+    
         stage('Build and Push Containers') {
             steps {
                 echo "Running Build and push your containers or other steps"
             }
         }
-
+    
         stage('Promote') {
             steps {
                 echo "Running Perform promotion steps or other steps"
             }
         }
-
+    
         stage('Fresh Cluster') {
             when {
                 expression {
@@ -46,29 +46,31 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    def versions
-                    if (params.BASE_VERSION == 'ALL') {
-                        versions = ['11', '10', '9', '8', '7', '3']
-                    } else {
-                        versions = [params.BASE_VERSION]
+                for (String version in params.BASE_VERSION) {
+                    stage('Check license') {
+                        steps {
+                            if (version == 'ALL') {
+                                echo "Running Perform promotion steps for all versions."
+                            } else {
+                                echo "Running Perform promotion steps for version ${version}"
+                            }
+                        }
                     }
-
-                    for (def version in versions) {
-                        echo "Running steps for version ${version}"
-                        stage('Check license') {
-                            steps {
-                                echo "Running Check license steps for version ${version}."
+                    stage('Check license 2') {
+                        steps {
+                            if (version == 'ALL') {
+                                echo "Running Check license 2 steps for all versions."
+                            } else {
+                                echo "Running Check license 2 steps for version ${version}"
                             }
                         }
-                        stage('Check license 2') {
-                            steps {
-                                echo "Running Check license 2 steps for version ${version}."
-                            }
-                        }
-                        stage('Check license 3') {
-                            steps {
-                                echo "Running Check license 3 steps for version ${version}."
+                    }
+                    stage('Check license 3') {
+                        steps {
+                            if (version == 'ALL') {
+                                echo "Running Check license 3 steps for all versions."
+                            } else {
+                                echo "Running Check license 3 steps for version ${version}"
                             }
                         }
                     }
@@ -76,7 +78,7 @@ pipeline {
             }
         }
     }
-
+    
     post {
         always {
             script {
