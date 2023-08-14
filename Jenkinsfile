@@ -38,56 +38,60 @@ pipeline {
                 echo "Running Perform promotion steps or other steps"
             }
         }
-
+        
         stage('Fresh Cluster') {
-            if (params.BASE_VERSION != "ALL") {
-            /*when {
+            when {
                 expression {
-                    params.BASE_VERSION == "ALL" 
+                    return params.BASE_VERSION == "ALL"
                 }
-            }*/
-                matrix {
-                    axes {
-                        axis {
-                            name 'BASE_VERSION'
-                            values '11', '10', '9', '8', '7', '3'
+            }
+            matrix {
+                axes {
+                    axis {
+                        name 'BASE_VERSION'
+                        values '11', '10', '9', '8', '7', '3'
+                    }
+                }
+                stages {
+                    stage ('Check license') {
+                        steps {
+                            echo "Running Check license or other steps ${BASE_VERSION}"
                         }
                     }
-                    stages {
-                        stage ('Check license') {
-                            steps {
-                                echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                            }
+                    stage ('Check license 2') {
+                        steps {
+                            echo "Running Check license 2 or other steps ${BASE_VERSION}"
                         }
-                        stage ('Check license 2') {
-                            steps {
-                                echo "Running Check license 2 or other steps ${BASE_VERSION}"
-                            }
-                        }
-                        stage ('Check license 3') {
-                            steps {
-                                echo "Running Check license 3 or other steps ${BASE_VERSION}"
-                            }
+                    }
+                    stage ('Check license 3') {
+                        steps {
+                            echo "Running Check license 3 or other steps ${BASE_VERSION}"
                         }
                     }
                 }
             }
-            else {
-                execute stage('Skip matrix') {
+            stages {
+                stage ('Skip matrix') {
+                    when {
+                        expression {
+                            return params.BASE_VERSION != "ALL"
+                        }
+                    }
                     steps {
                         echo "Running Skip matrix or other steps ${BASE_VERSION}"
                     }
                 }
-           } 
+            }
+        }
     }
 
     post {
         always {
             script {
                 if (params.BASE_VERSION == "ALL") {
-                    print("Fresh Cluster is deployed for all versions.")
+                    echo "Fresh Cluster is deployed for all versions."
                 } else {
-                    print("Fresh Cluster is deployed for version ${params.BASE_VERSION}.")
+                    echo "Fresh Cluster is deployed for version ${params.BASE_VERSION}."
                 }
             }
         }
