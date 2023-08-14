@@ -73,6 +73,11 @@ pipeline {
             }
         }
         stage('Desired Version Fresh Cluster') {
+            when {
+                expression {
+                    params.BASE_VERSION != "ALL"
+                }
+            }
             stages {
                 stage ('Check license') {
                     steps {
