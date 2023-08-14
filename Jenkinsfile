@@ -40,44 +40,35 @@ pipeline {
         }
 
         stage('Fresh Cluster') {
-            matrix {
-                axes {
-                    axis {
-                        name 'BASE_VERSION'
-                        values 'ALL', '11', '10', '9', '8', '7', '3'
-                    }
+            when {
+                expression {
+                    params.BASE_VERSION == 'ALL' || params.BASE_VERSION in ['11', '10', '9', '8', '7', '3']
                 }
-                stages {
-                    stage('Check license') {
-                        steps {
-                            script {
-                                if (params.BASE_VERSION == 'ALL') {
-                                    echo "Running Perform promotion steps for all versions."
-                                } else {
-                                    echo "Running Perform promotion steps for version ${params.BASE_VERSION}."
-                                }
+            }
+            steps {
+                script {
+                    def versions
+                    if (params.BASE_VERSION == 'ALL') {
+                        versions = ['11', '10', '9', '8', '7', '3']
+                    } else {
+                        versions = [params.BASE_VERSION]
+                    }
+
+                    for (def version in versions) {
+                        echo "Running steps for version ${version}"
+                        stage('Check license') {
+                            steps {
+                                echo "Running Check license steps for version ${version}."
                             }
                         }
-                    }
-                    stage('Check license 2') {
-                        steps {
-                            script {
-                                if (params.BASE_VERSION == 'ALL') {
-                                    echo "Running Check license 2 steps for all versions."
-                                } else {
-                                    echo "Running Check license 2 steps for version ${params.BASE_VERSION}."
-                                }
+                        stage('Check license 2') {
+                            steps {
+                                echo "Running Check license 2 steps for version ${version}."
                             }
                         }
-                    }
-                    stage('Check license 3') {
-                        steps {
-                            script {
-                                if (params.BASE_VERSION == 'ALL') {
-                                    echo "Running Check license 3 steps for all versions."
-                                } else {
-                                    echo "Running Check license 3 steps for version ${params.BASE_VERSION}."
-                                }
+                        stage('Check license 3') {
+                            steps {
+                                echo "Running Check license 3 steps for version ${version}."
                             }
                         }
                     }
