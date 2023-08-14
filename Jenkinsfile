@@ -49,7 +49,7 @@ pipeline {
                         steps {
                             script {
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}
+                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
                             }
                         }
                     }
@@ -92,7 +92,7 @@ pipeline {
                 stage ('Check license') {
                     steps {
                         echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                        echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
+                        // echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
                     }
                 }
                 stage ('Check license 2') {
