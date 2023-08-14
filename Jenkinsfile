@@ -40,29 +40,38 @@ pipeline {
         }
 
         stage('Fresh Cluster') {
+            when {
+                expression {
+                    params.BASE_VERSION == "ALL" || params.BASE_VERSION in ["11", "10", "9", "8", "7", "3"]
+                }
+            }
             stages {
-                    stage ('Check license') {
-                        steps {
-                            echo "Running Perform promotion steps or other steps"
-                        }
+                stage ('Check license') {
+                    steps {
+                        echo "Running Check license steps"
                     }
-                    stage ('Check license 2') {
-                        steps {
-                            echo "Running Check license 2 or other steps"
-                        }
+                }
+                stage ('Check license 2') {
+                    steps {
+                        echo "Running Check license 2 steps"
                     }
-                    stage ('Check license 3') {
-                        steps {
-                            echo "Running Check license 3 or other steps"
-                        }
+                }
+                stage ('Check license 3') {
+                    steps {
+                        echo "Running Check license 3 steps"
                     }
+                }
             }
         }
     }    
     post {
-    always {
-        script {
-            print ("Fresh Cluster is not deployed.")
+        always {
+            script {
+                if (params.BASE_VERSION == "ALL") {
+                    print("Fresh Cluster is not deployed for all versions.")
+                } else {
+                    print("Fresh Cluster is not deployed for version ${params.BASE_VERSION}.")
+                }
             }
         }
     }
