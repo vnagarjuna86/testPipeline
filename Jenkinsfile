@@ -72,6 +72,25 @@ pipeline {
                 }
             }
         }
+        stage('Fresh Cluster') {
+            stages {
+                stage ('Check license') {
+                    steps {
+                        echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
+                    }
+                }
+                stage ('Check license 2') {
+                    steps {
+                        echo "Running Check license 2 or other steps ${BASE_VERSION}"
+                    }
+                }
+                stage ('Check license 3') {
+                    steps {
+                        echo "Running Check license 3 or other steps ${BASE_VERSION}"
+                    }
+                }
+            }
+        }
     }    
     post {
         always {
