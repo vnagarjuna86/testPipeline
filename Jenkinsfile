@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        multiChoice(
+        choice(
             name: 'BASE_VERSION',
             choices: ["ALL", "11", "10", "9", "8", "7", "3"],
             description: 'Select base version(s) to trigger'
