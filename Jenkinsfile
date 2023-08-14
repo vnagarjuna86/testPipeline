@@ -71,7 +71,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Skip matrix') {
+            when {
+                expression {
+                    params.BASE_VERSION != "ALL"
+                }
+            }
+            steps {
+                echo "Running Skip matrix or other steps ${params.BASE_VERSION}"
+            }
+        }
     }    
+
     post {
         always {
             script {
