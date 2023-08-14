@@ -72,7 +72,7 @@ pipeline {
                 }
             }
         }
-        stage('Fresh Cluster') {
+        stage('Desired Version Fresh Cluster') {
             stages {
                 stage ('Check license') {
                     steps {
