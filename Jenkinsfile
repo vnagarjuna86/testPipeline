@@ -49,8 +49,7 @@ pipeline {
                 axes {
                     axis {
                         name 'BASE_VERSION'
-                        values 'ALL'
-                        allowedValues '11', '10', '9', '8', '7', '3' // Allow these values only if needed
+                        values 'ALL', '11', '10', '9', '8', '7', '3' 
                     }
                 }
                 stages {
