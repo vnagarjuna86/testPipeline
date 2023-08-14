@@ -1,5 +1,4 @@
 // Pipeline to build a release candidate.
-@Library('fwd-jenkins-libraries') _
 
 pipeline {
     agent any
@@ -54,11 +53,11 @@ pipeline {
                         def baseVersions = ["11", "10", "9", "8", "7", "3"]
                         parallel baseVersions.collectEntries { version ->
                             ["Build $version": {
-                                buildRelease(version, params.DEPLOY)
+                                echo "buildRelease(version, params.DEPLOY)"
                             }]
                         }
                     } else {
-                        buildRelease(params.BASE_VERSION, params.DEPLOY)
+                        echo "buildRelease(params.BASE_VERSION, params.DEPLOY)"
                     }
                 }
             }
