@@ -1,5 +1,3 @@
-@Library('fwd-jenkins-libraries') _
-
 pipeline {
     agent any
 
