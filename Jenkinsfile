@@ -46,32 +46,34 @@ pipeline {
                 }
             }
             steps {
-                def versions = params.BASE_VERSION.split(',') // Split the string into a list
-                for (String version in versions) {
-                    stage('Check license') {
-                        steps {
-                            if (version == 'ALL') {
-                                echo "Running Perform promotion steps for all versions."
-                            } else {
-                                echo "Running Perform promotion steps for version ${version}"
+                script {
+                    def versions = params.BASE_VERSION.split(',') // Split the string into a list
+                    for (String version in versions) {
+                        stage('Check license') {
+                            steps {
+                                if (version == 'ALL') {
+                                    echo "Running Perform promotion steps for all versions."
+                                } else {
+                                    echo "Running Perform promotion steps for version ${version}"
+                                }
                             }
                         }
-                    }
-                    stage('Check license 2') {
-                        steps {
-                            if (version == 'ALL') {
-                                echo "Running Check license 2 steps for all versions."
-                            } else {
-                                echo "Running Check license 2 steps for version ${version}"
+                        stage('Check license 2') {
+                            steps {
+                                if (version == 'ALL') {
+                                    echo "Running Check license 2 steps for all versions."
+                                } else {
+                                    echo "Running Check license 2 steps for version ${version}"
+                                }
                             }
                         }
-                    }
-                    stage('Check license 3') {
-                        steps {
-                            if (version == 'ALL') {
-                                echo "Running Check license 3 steps for all versions."
-                            } else {
-                                echo "Running Check license 3 steps for version ${version}"
+                        stage('Check license 3') {
+                            steps {
+                                if (version == 'ALL') {
+                                    echo "Running Check license 3 steps for all versions."
+                                } else {
+                                    echo "Running Check license 3 steps for version ${version}"
+                                }
                             }
                         }
                     }
