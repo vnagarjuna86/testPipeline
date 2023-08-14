@@ -46,10 +46,38 @@ pipeline {
                                       ["11", "10", "9", "8", "7", "3"] :
                                       [params.BASE_VERSION]
 
-                    parallel baseVersions.collectEntries { version ->
-                        ["Build and Test $version": {
-                            buildAndTestRelease(version, params.DEPLOY)
-                        }]
+                    baseVersions.each { version ->
+                        stage("Build and Test Release $version") {
+                            if (params.DEPLOY) {
+                                echo "Building and testing release for version $version"
+
+                                stage('Fresh Cluster') {
+                                    steps {
+                                        echo "Running Fresh Cluster logic or other steps for version $version"
+                                    }
+                                }
+
+                                stage('Check license') {
+                                    steps {
+                                        echo "Running Check license logic or other steps for version $version"
+                                    }
+                                }
+
+                                stage('Create VMs on AWS') {
+                                    steps {
+                                        echo "Running Create VMs logic or other steps for version $version"
+                                    }
+                                }
+
+                                stage('Functional Test [Others]') {
+                                    steps {
+                                        echo "Running functional tests or other steps for version $version"
+                                    }
+                                }
+                            } else {
+                                echo "Not deploying for version $version"
+                            }
+                        }
                     }
                 }
             }
@@ -59,44 +87,6 @@ pipeline {
             steps {
                 echo "Running Perform post actions or other steps"
             }
-        }
-    }
-}
-
-def buildAndTestRelease(version, deploy) {
-    stage("Build and Test Release $version") {
-        if (deploy) {
-            echo "Building and testing release for version $version"
-            
-            // Build release stages
-            stage('Fresh Cluster') {
-                steps {
-                    echo "Running Fresh Cluster logic or other steps for version $version"
-                }
-            }
-
-            stage('Check license') {
-                steps {
-                    echo "Running Check license logic or other steps for version $version"
-                }
-            }
-
-            stage('Create VMs on AWS') {
-                steps {
-                    echo "Running Create VMs logic or other steps for version $version"
-                }
-            }
-
-            // Add more stages as needed
-
-            // Functional test stage
-            stage('Functional Test [Others]') {
-                steps {
-                    echo "Running functional tests or other steps for version $version"
-                }
-            }
-        } else {
-            echo "Not deploying for version $version"
         }
     }
 }
