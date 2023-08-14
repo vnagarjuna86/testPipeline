@@ -46,7 +46,8 @@ pipeline {
                 }
             }
             steps {
-                for (String version in params.BASE_VERSION) {
+                def versions = params.BASE_VERSION.split(',') // Split the string into a list
+                for (String version in versions) {
                     stage('Check license') {
                         steps {
                             if (version == 'ALL') {
