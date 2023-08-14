@@ -46,38 +46,53 @@ pipeline {
                                       ["11", "10", "9", "8", "7", "3"] :
                                       [params.BASE_VERSION]
 
-                    baseVersions.each { version ->
-                        stage("Build and Test Release $version") {
-                            if (params.DEPLOY) {
-                                echo "Building and testing release for version $version"
-
+                    parallel baseVersions.collectEntries { version ->
+                        def deployForVersion = version == params.BASE_VERSION
+                        def stepsForVersion = [
+                            "Build Releases (for version $version)": {
                                 stage('Fresh Cluster') {
                                     steps {
-                                        echo "Running Fresh Cluster logic or other steps for version $version"
+                                        if (deployForVersion) {
+                                            echo "Running Fresh Cluster logic or other steps for version $version"
+                                        } else {
+                                            echo "Skipping Fresh Cluster for version $version"
+                                        }
                                     }
                                 }
 
                                 stage('Check license') {
                                     steps {
-                                        echo "Running Check license logic or other steps for version $version"
+                                        if (deployForVersion) {
+                                            echo "Running Check license logic or other steps for version $version"
+                                        } else {
+                                            echo "Skipping Check license for version $version"
+                                        }
                                     }
                                 }
 
                                 stage('Create VMs on AWS') {
                                     steps {
-                                        echo "Running Create VMs logic or other steps for version $version"
+                                        if (deployForVersion) {
+                                            echo "Running Create VMs logic or other steps for version $version"
+                                        } else {
+                                            echo "Skipping Create VMs for version $version"
+                                        }
                                     }
                                 }
 
                                 stage('Functional Test [Others]') {
                                     steps {
-                                        echo "Running functional tests or other steps for version $version"
+                                        if (deployForVersion) {
+                                            echo "Running functional tests or other steps for version $version"
+                                        } else {
+                                            echo "Skipping functional tests for version $version"
+                                        }
                                     }
                                 }
-                            } else {
-                                echo "Not deploying for version $version"
                             }
-                        }
+                        ]
+
+                        return [version, stepsForVersion]
                     }
                 }
             }
