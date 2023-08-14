@@ -53,13 +53,27 @@ pipeline {
                     }
                 }
                 stages {
-                    stage('Check license, 2 and 3') {
+                    /* stage('Check license, 2 and 3') {
                         steps {
                             echo "Running Check license steps for BASE_VERSION: ${BASE_VERSION}"
                             echo "Running Check license 2 steps for BASE_VERSION: ${BASE_VERSION}"
                             echo "Running Check license 3 steps for BASE_VERSION: ${BASE_VERSION}"
                         }
+                    }*/
+                    stage ('Check license') {
+                        steps {
+                            echo "Running Perform promotion steps or other steps"
+                        }
                     }
+                    stage ('Check license 2') {
+                        steps {
+                            echo "Running Check license 2 or other steps"
+                        }
+                    }
+                    stage ('Check license 3') {
+                        steps {
+                            echo "Running Check license 3 or other steps"
+                        }
                 }
             }
         }
