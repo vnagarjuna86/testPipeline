@@ -110,7 +110,7 @@ pipeline {
                                 // env.AMI_ID = amiId
                                 // Using the environment block to set an environment variable
                                 environment {
-                                    AMI_ID = amiId
+                                    AMI_ID = ${amiId}
                                 }
                 
                                 sh '''
