@@ -108,6 +108,7 @@ pipeline {
                                 echo "AMI_ID is ${AMI_ID}"
                                 echo "Fetching AMI for Version ${BASE_VERSION}: ${AMI_ID}"
                                 // Set the amiId as an environment variable
+                                env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
@@ -122,7 +123,7 @@ pipeline {
                             env.AMI_ID = amiMap[BASE_VERSION]
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                             echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                            
+                            echo "Master IP for BASE_VERSION ${BASE_VERSION}: ${env."MASTER_IP_${BASE_VERSION}"}"
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
