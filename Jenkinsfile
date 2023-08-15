@@ -45,11 +45,12 @@ pipeline {
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
                                 env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
+                                def dynamicMasterIP = env["MASTER_IP_${BASE_VERSION}"] // Store in a local variable
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
-                                    echo \"MASTER_IP is: \${MASTER_IP_${BASE_VERSION}}\"
+                                    echo \"MASTER_IP is: $dynamicMasterIP\"
                                 '''
                                 }
                         }
@@ -96,11 +97,12 @@ pipeline {
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                             echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
                             env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
+                            def dynamicMasterIP = env["MASTER_IP_${BASE_VERSION}"] // Store in a local variable
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
                                 echo "Using AMI_ID in shell: $AMI_ID"
-                                echo \"MASTER_IP is: \${MASTER_IP_${BASE_VERSION}}\"
+                                echo \"MASTER_IP is: $dynamicMasterIP\"
                             '''
                             }
                     }
