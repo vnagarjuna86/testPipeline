@@ -128,13 +128,13 @@ pipeline {
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
                                 echo "Using AMI_ID in shell: $AMI_ID"
                             '''
-                            echo "IP is ${env["MASTER_IP_${BASE_VERSION}"]}"
+                            echo "IP is env."MASTER_IP_${BASE_VERSION}" "
                             }
                     }
                 }
                 stage ('Check license 2') {
                     steps {
-                        echo "Running Check license 2 or other steps ${BASE_VERSION}"
+                        echo "Running Check license 2 or other steps ${BASE_VERSION}, env."MASTER_IP_${BASE_VERSION}" "
                     }
                 }
                 stage ('Check license 3') {
