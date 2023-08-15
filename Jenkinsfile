@@ -119,22 +119,21 @@ pipeline {
                 stage ('Check license') {
                     steps {
                         script {
-                            def AMI_ID = amiMap[BASE_VERSION]
+                            def amiId = amiMap[BASE_VERSION]
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                             echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
-                            env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
+                            env.AMI_ID = amiId
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
                                 echo "Using AMI_ID in shell: $AMI_ID"
                             '''
-                            echo "IP is env."MASTER_IP_${BASE_VERSION}" "
                             }
                     }
                 }
                 stage ('Check license 2') {
                     steps {
-                        echo "Running Check license 2 or other steps ${BASE_VERSION},${env."MASTER_IP_${BASE_VERSION}"}"
+                        echo "Running Check license 2 or other steps ${BASE_VERSION}"
                     }
                 }
                 stage ('Check license 3') {
