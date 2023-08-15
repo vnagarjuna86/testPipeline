@@ -109,12 +109,10 @@ pipeline {
                                 // Set the amiId as an environment variable
                                 env.AMI_ID = amiId
                                 echo "env.AMI_ID ${AMI_ID}"
-                                /*withEnv([env.AMI_ID = amiId]) {
-                                    sh '''
-                                        pwd
-                                        echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                                    '''
-                                }*/
+                                sh '''
+                                    pwd
+                                    echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                                '''
                             }
                         }
                 }
