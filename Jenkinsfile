@@ -38,48 +38,31 @@ pipeline {
                     }
                 }
                 stages {
-                     stage('Fetch AMI') {
-                        steps {
-                            script {
-                               /* def amiMap = [
-                                    '11': 'ami-0f2103a4b8097a560',
-                                    '10': 'ami-07c628e683bb46bf3',
-                                    '9': 'ami-0d40cc67849b82059',
-                                    '8': 'ami-0d4a0d68ad7ea84d2',
-                                    '7': 'ami-0a45b299774e0b9bc',
-                                    '3': 'ami-0a45b299994e0b9bc'
-                                ]
-                                def amiId = amiMap[BASE_VERSION] */
-                                def amiId = amiMap[BASE_VERSION]
-                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
-                                // return amiId // Return amiId so it's accessible in subsequent stages
-                            }
-                        }
-                    }
                     stage ('Check license') {
                         steps {
                             script {
-                                def amiId = amiMap[BASE_VERSION]
+                                env.AMI_ID = amiMap[BASE_VERSION]
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
-                                // Set the amiId as an environment variable
-                                withEnv([env.AMI_ID = amiId]) {
-                                    sh '''
-                                        pwd
-                                        echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                                    '''
+                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                                env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
+                                sh '''
+                                    pwd
+                                    # echo "Using AMI_ID in shell: \$AMI_ID"
+                                    echo "Using AMI_ID in shell: $AMI_ID"
+                                '''
                                 }
-                            }
                         }
                     }
                     stage ('Check license 2') {
                         steps {
                             echo "Running Check license 2 or other steps ${BASE_VERSION}"
+                            echo "Master IP for BASE_VERSION ${BASE_VERSION}: ${env."MASTER_IP_${BASE_VERSION}"}"
                         }
                     }
                     stage ('Check license 3') {
                         steps {
                             echo "Running Check license 3 or other steps ${BASE_VERSION}"
+                            echo "Master IP for BASE_VERSION ${BASE_VERSION}: ${env."MASTER_IP_${BASE_VERSION}"}"
                         }
                     }
                 }
@@ -95,20 +78,8 @@ pipeline {
                  /*stage('Fetch AMI') {
                         steps {
                             script {
-                                /*def amiMap = [
-                                    '11': 'ami-0f2103a4b8097a560',
-                                    '10': 'ami-07c628e683bb46bf3',
-                                    '9': 'ami-0d40cc67849b82059',
-                                    '8': 'ami-0d4a0d68ad7ea84d2',
-                                    '7': 'ami-0a45b299774e0b9bc',
-                                    '3': 'ami-0a45b299994e0b9bc'
-                                ]
-                                // def amiId = amiMap[BASE_VERSION]
                                 env.AMI_ID = amiMap[BASE_VERSION]
-                                echo "AMI_ID is ${AMI_ID}"
                                 echo "Fetching AMI for Version ${BASE_VERSION}: ${AMI_ID}"
-                                // Set the amiId as an environment variable
-                                
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
