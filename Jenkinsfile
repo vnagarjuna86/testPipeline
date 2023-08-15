@@ -49,6 +49,7 @@ pipeline {
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
+                                    echo "MASTER_IP is: ${env."MASTER_IP_${BASE_VERSION}"}"
                                 '''
                                 }
                         }
@@ -99,6 +100,7 @@ pipeline {
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
                                 echo "Using AMI_ID in shell: $AMI_ID"
+                                echo "MASTER_IP is: ${env."MASTER_IP_${BASE_VERSION}"}"
                             '''
                             }
                     }
