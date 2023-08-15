@@ -134,7 +134,7 @@ pipeline {
                 }
                 stage ('Check license 2') {
                     steps {
-                        echo "Running Check license 2 or other steps ${BASE_VERSION}, env."MASTER_IP_${BASE_VERSION}" "
+                        echo "Running Check license 2 or other steps ${BASE_VERSION},${env."MASTER_IP_${BASE_VERSION}"}"
                     }
                 }
                 stage ('Check license 3') {
