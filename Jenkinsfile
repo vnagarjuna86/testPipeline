@@ -125,7 +125,7 @@ pipeline {
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
-                                echo "Using AMI_ID in shell: $AMI_ID"
+                                echo "Using AMI_ID in shell: \$AMI_ID"
                             '''
                             }
                     }
