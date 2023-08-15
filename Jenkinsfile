@@ -98,13 +98,11 @@ pipeline {
                             echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
                             env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
                             sh '''
-                                eval '
-                                    pwd
-                                    # echo "Using AMI_ID in shell: \$AMI_ID"
-                                    echo "Using AMI_ID in shell: $AMI_ID"
-                                    //echo "MASTER_IP is: ${env."MASTER_IP_${BASE_VERSION}"}"
-                                    echo "MASTER_IP is: ${env.MASTER_IP_${BASE_VERSION}}"
-                                '
+                                pwd
+                                # echo "Using AMI_ID in shell: \$AMI_ID"
+                                echo "Using AMI_ID in shell: $AMI_ID"
+                                //echo "MASTER_IP is: ${env."MASTER_IP_${BASE_VERSION}"}"
+                                echo "MASTER_IP is: \\\${env.MASTER_IP_${BASE_VERSION}}
                             '''
                             }
                     }
