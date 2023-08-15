@@ -63,11 +63,12 @@ pipeline {
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
                                 // Set the amiId as an environment variable
-                                env.AMI_ID = amiId
-                                sh '''
-                                    pwd
-                                    echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                                '''
+                                withEnv([env.AMI_ID = amiId]) {
+                                    sh '''
+                                        pwd
+                                        echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                                    '''
+                                }
                             }
                         }
                     }
