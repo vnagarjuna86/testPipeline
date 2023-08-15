@@ -1,11 +1,11 @@
-def amiMap = [
+/*def amiMap = [
     '11': 'ami-0f2103a4b8097a560',
     '10': 'ami-07c628e683bb46bf3',
     '9': 'ami-0d40cc67849b82059',
     '8': 'ami-0d4a0d68ad7ea84d2',
     '7': 'ami-0a45b299774e0b9bc',
     '3': 'ami-0a45b299994e0b9bc'
-]
+]*/
 
 pipeline {
     agent any
@@ -95,7 +95,7 @@ pipeline {
                  stage('Fetch AMI') {
                         steps {
                             script {
-                                /*def amiMap = [
+                                def amiMap = [
                                     '11': 'ami-0f2103a4b8097a560',
                                     '10': 'ami-07c628e683bb46bf3',
                                     '9': 'ami-0d40cc67849b82059',
@@ -103,7 +103,7 @@ pipeline {
                                     '7': 'ami-0a45b299774e0b9bc',
                                     '3': 'ami-0a45b299994e0b9bc'
                                 ]
-                                def amiId = amiMap[BASE_VERSION]*/
+                                // def amiId = amiMap[BASE_VERSION]
                                 def amiId = amiMap[BASE_VERSION]
                                 echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
                                 // Set the amiId as an environment variable
