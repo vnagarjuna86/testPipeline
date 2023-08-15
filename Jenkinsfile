@@ -105,7 +105,8 @@ pipeline {
                                 ]
                                 // def amiId = amiMap[BASE_VERSION]
                                 env.AMI_ID = amiMap[BASE_VERSION]
-                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
+                                echo "AMI_ID is ${AMI_ID}"
+                                echo "Fetching AMI for Version ${BASE_VERSION}: ${AMI_ID}"
                                 // Set the amiId as an environment variable
                                 sh '''
                                     pwd
@@ -120,7 +121,7 @@ pipeline {
                         script {
                             env.AMI_ID = amiMap[BASE_VERSION]
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
+                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
                             
                             sh '''
                                 pwd
