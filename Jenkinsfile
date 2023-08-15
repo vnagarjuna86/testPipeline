@@ -122,6 +122,11 @@ pipeline {
                             def amiId = amiMap[BASE_VERSION]
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                             echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
+                            sh '''
+                                pwd
+                                # echo "Using AMI_ID in shell: \$AMI_ID"
+                                echo "Using AMI_ID in shell: $AMI_ID"
+                            '''
                             }
                     }
                 }
