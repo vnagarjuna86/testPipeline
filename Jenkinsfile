@@ -104,10 +104,9 @@ pipeline {
                                     '3': 'ami-0a45b299994e0b9bc'
                                 ]
                                 // def amiId = amiMap[BASE_VERSION]
-                                def amiId = amiMap[BASE_VERSION]
+                                env.AMI_ID = amiMap[BASE_VERSION]
                                 echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
                                 // Set the amiId as an environment variable
-                                env.AMI_ID = amiId
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
@@ -119,10 +118,10 @@ pipeline {
                 stage ('Check license') {
                     steps {
                         script {
-                            def amiId = amiMap[BASE_VERSION]
+                            env.AMI_ID = amiMap[BASE_VERSION]
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                             echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
-                            env.AMI_ID = amiId
+                            
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
