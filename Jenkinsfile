@@ -1,10 +1,10 @@
 def amiMap = [
-    '11': 'ami-0f2103a4b8097a560',
-    '10': 'ami-07c628e683bb46bf3',
-    '9': 'ami-0d40cc67849b82059',
-    '8': 'ami-0d4a0d68ad7ea84d2',
-    '7': 'ami-0a45b299774e0b9bc',
-    '3': 'ami-0a45b299994e0b9bc'
+    '11': 'ami-0f2103a4b8097a570',
+    '10': 'ami-07c628e683bb46bh3',
+    '9': 'ami-0d40cc67849b82659',
+    '8': 'ami-0d4a0d68ad7ea87d2',
+    '7': 'ami-0a45b299774e0b2bc',
+    '3': 'ami-0a45b299994e0b8bc'
 ]
 
 pipeline {
@@ -44,6 +44,11 @@ pipeline {
                                 env.AMI_ID = amiMap[BASE_VERSION]
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                                def baseVersion = BASE_VERSION
+                                // Simulate getting the master IP using a shell command
+                                def masterIP = sh(script: 'echo "192.168.1.${baseVersion}"', returnStdout: true).trim()
+                                masterIPs[baseVersion] = masterIP // Store the master IP in the map
+                                echo "Master IP for base version ${baseVersion}: ${masterIP}"
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
@@ -55,6 +60,17 @@ pipeline {
                     stage ('Check license 2') {
                         steps {
                             echo "Running Check license 2 or other steps ${BASE_VERSION}"
+                            def baseVersion = BASE_VERSION
+                            def masterIP = masterIPs[baseVersion] // Retrieve the stored master IP
+                            // Use the master IP in a 'sh' block
+                            sh '''
+                                echo "Using IP for base version ${baseVersion}: ${masterIP}"
+                                # Add more shell commands that use the master IP
+                            '''
+                            
+                            // Use the master IP in 'steps' block
+                            echo "Using IP for base version ${baseVersion}: ${masterIP}"
+                            
                         }
                     }
                     stage ('Check license 3') {
