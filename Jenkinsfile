@@ -44,10 +44,13 @@ pipeline {
                                 env.AMI_ID = myMap[BASE_VERSION].AMI
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                                env.MASTER_IP = myMap[BASE_VERSION].MASTER_IP
+                                env.MASTER_IP = sh(script: 'echo "192.168.1.${baseVersion}"', returnStdout: true).trim()
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
+                                    echo "Using MASTER_IP in shell: $MASTER_IP"
                                 '''
                                 }
                         }
