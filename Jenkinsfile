@@ -38,15 +38,6 @@ pipeline {
                     }
                 }
                 stages {
-                     stage('Fetch AMI') {
-                        steps {
-                            script {
-                                def amiId = amiMap[BASE_VERSION]
-                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
-                                // return amiId // Return amiId so it's accessible in subsequent stages
-                            }
-                        }
-                    }
                     stage ('Check license') {
                         steps {
                             script {
@@ -58,7 +49,6 @@ pipeline {
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
                                 '''
-                                }
                             }
                         }
                     }
@@ -108,7 +98,7 @@ pipeline {
                 }
             }
         }
-    }    
+    } 
     post {
         always {
             script {
