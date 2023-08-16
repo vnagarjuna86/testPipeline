@@ -38,33 +38,48 @@ pipeline {
                     }
                 }
                 stages {
+                     stage('Fetch AMI') {
+                        steps {
+                            script {
+                               /* def amiMap = [
+                                    '11': 'ami-0f2103a4b8097a560',
+                                    '10': 'ami-07c628e683bb46bf3',
+                                    '9': 'ami-0d40cc67849b82059',
+                                    '8': 'ami-0d4a0d68ad7ea84d2',
+                                    '7': 'ami-0a45b299774e0b9bc',
+                                    '3': 'ami-0a45b299994e0b9bc'
+                                ]
+                                def amiId = amiMap[BASE_VERSION] */
+                                def amiId = amiMap[BASE_VERSION]
+                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
+                                // return amiId // Return amiId so it's accessible in subsequent stages
+                            }
+                        }
+                    }
                     stage ('Check license') {
                         steps {
                             script {
-                                env.AMI_ID = amiMap[BASE_VERSION]
+                                def amiId = amiMap[BASE_VERSION]
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                                env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
-                                def dynamicMasterIP = env["MASTER_IP_${BASE_VERSION}"] // Store in a local variable
-                                sh '''
-                                    pwd
-                                    # echo "Using AMI_ID in shell: \$AMI_ID"
-                                    echo "Using AMI_ID in shell: $AMI_ID"
-                                    echo \"MASTER_IP is: $dynamicMasterIP\"
-                                '''
+                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
+                                // Set the amiId as an environment variable
+                                withEnv([env.AMI_ID = amiId]) {
+                                    sh '''
+                                        pwd
+                                        echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                                    '''
                                 }
+                            }
                         }
                     }
                     stage ('Check license 2') {
                         steps {
                             echo "Running Check license 2 or other steps ${BASE_VERSION}"
-                            echo "Master IP for BASE_VERSION ${BASE_VERSION}: ${env."MASTER_IP_${BASE_VERSION}"}"
                         }
                     }
                     stage ('Check license 3') {
                         steps {
                             echo "Running Check license 3 or other steps ${BASE_VERSION}"
-                            echo "Master IP for BASE_VERSION ${BASE_VERSION}: ${env."MASTER_IP_${BASE_VERSION}"}"
                         }
                     }
                 }
@@ -80,8 +95,19 @@ pipeline {
                  /*stage('Fetch AMI') {
                         steps {
                             script {
-                                env.AMI_ID = amiMap[BASE_VERSION]
-                                echo "Fetching AMI for Version ${BASE_VERSION}: ${AMI_ID}"
+                                /*def amiMap = [
+                                    '11': 'ami-0f2103a4b8097a560',
+                                    '10': 'ami-07c628e683bb46bf3',
+                                    '9': 'ami-0d40cc67849b82059',
+                                    '8': 'ami-0d4a0d68ad7ea84d2',
+                                    '7': 'ami-0a45b299774e0b9bc',
+                                    '3': 'ami-0a45b299994e0b9bc'
+                                ]
+                                // def amiId = amiMap[BASE_VERSION]
+                                def amiId = amiMap[BASE_VERSION]
+                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
+                                // Set the amiId as an environment variable
+                                env.AMI_ID = amiId
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
@@ -93,16 +119,14 @@ pipeline {
                 stage ('Check license') {
                     steps {
                         script {
-                            env.AMI_ID = amiMap[BASE_VERSION]
+                            def amiId = amiMap[BASE_VERSION]
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                            env."MASTER_IP_${BASE_VERSION}" = '1.2.3.4'
-                            groovysh '''
+                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
+                            env.AMI_ID = amiId
+                            sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
                                 echo "Using AMI_ID in shell: $AMI_ID"
-                                //echo "MASTER_IP is: ${env."MASTER_IP_${BASE_VERSION}"}"
-                                echo "MASTER_IP is: \\\${env.MASTER_IP_${BASE_VERSION}}
                             '''
                             }
                     }
@@ -110,13 +134,11 @@ pipeline {
                 stage ('Check license 2') {
                     steps {
                         echo "Running Check license 2 or other steps ${BASE_VERSION}"
-                        echo "Master IP for BASE_VERSION ${BASE_VERSION}: ${env."MASTER_IP_${BASE_VERSION}"}"
                     }
                 }
                 stage ('Check license 3') {
                     steps {
                         echo "Running Check license 3 or other steps ${BASE_VERSION}"
-                        echo "Master IP for BASE_VERSION ${BASE_VERSION}: ${env."MASTER_IP_${BASE_VERSION}"}"
                     }
                 }
             }
