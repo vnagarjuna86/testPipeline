@@ -60,16 +60,16 @@ pipeline {
                     stage ('Check license 2') {
                         steps {
                             echo "Running Check license 2 or other steps ${BASE_VERSION}"
-                            def baseVersion = BASE_VERSION
-                            def masterIP = masterIPs[baseVersion] // Retrieve the stored master IP
+                            // def baseVersion = BASE_VERSION
+                            def masterIP = masterIPs[BASE_VERSION] // Retrieve the stored master IP
                             // Use the master IP in a 'sh' block
                             sh '''
-                                echo "Using IP for base version ${baseVersion}: ${masterIP}"
+                                echo "Using IP for base version ${BASE_VERSION}: ${masterIP}"
                                 # Add more shell commands that use the master IP
                             '''
                             
                             // Use the master IP in 'steps' block
-                            echo "Using IP for base version ${baseVersion}: ${masterIP}"
+                            echo "Using IP for base version ${BASE_VERSION}: ${masterIP}"
                             
                         }
                     }
