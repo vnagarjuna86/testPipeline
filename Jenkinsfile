@@ -1,10 +1,10 @@
-def amiMap = [
-    '11': 'ami-0f2103a4b8097a570',
-    '10': 'ami-07c628e683bb46bh3',
-    '9': 'ami-0d40cc67849b82659',
-    '8': 'ami-0d4a0d68ad7ea87d2',
-    '7': 'ami-0a45b299774e0b2bc',
-    '3': 'ami-0a45b299994e0b8bc'
+def myMap = [
+    '11': [AMI: 'ami-0f2103a4b8097a560', MASTER_IP: 'MASTER_IP_11'],
+    '10': [AMI: 'ami-07c628e683bb46bf3', MASTER_IP: 'MASTER_IP_10'],
+    '9': [AMI: 'ami-0d40cc67849b82059', MASTER_IP: 'MASTER_IP_9'],
+    '8': [AMI: 'ami-0d4a0d68ad7ea84d2', MASTER_IP: 'MASTER_IP_8'],
+    '7': [AMI: 'ami-0a45b299774e0b9bc', MASTER_IP: 'MASTER_IP_7'],
+    '3': [AMI: 'ami-0a45b299994e0b9bc', MASTER_IP: 'MASTER_IP_3']
 ]
 
 pipeline {
@@ -38,39 +38,23 @@ pipeline {
                     }
                 }
                 stages {
-                    stage ('Check license') {
+                     stage ('Check license') {
                         steps {
                             script {
-                                env.AMI_ID = amiMap[BASE_VERSION]
+                                env.AMI_ID = myMap[BASE_VERSION].AMI
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                                def baseVersion = BASE_VERSION
-                                // Simulate getting the master IP using a shell command
-                                def masterIP = sh(script: 'echo "192.168.1.${baseVersion}"', returnStdout: true).trim()
-                                masterIPs[baseVersion] = masterIP // Store the master IP in the map
-                                echo "Master IP for base version ${baseVersion}: ${masterIP}"
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
                                 '''
-                            }
+                                }
                         }
                     }
                     stage ('Check license 2') {
                         steps {
                             echo "Running Check license 2 or other steps ${BASE_VERSION}"
-                            // def baseVersion = BASE_VERSION
-                            def masterIP = masterIPs[BASE_VERSION] // Retrieve the stored master IP
-                            // Use the master IP in a 'sh' block
-                            sh '''
-                                echo "Using IP for base version ${BASE_VERSION}: ${masterIP}"
-                                # Add more shell commands that use the master IP
-                            '''
-                            
-                            // Use the master IP in 'steps' block
-                            echo "Using IP for base version ${BASE_VERSION}: ${masterIP}"
-                            
                         }
                     }
                     stage ('Check license 3') {
@@ -91,9 +75,10 @@ pipeline {
                 stage ('Check license') {
                     steps {
                         script {
-                            env.AMI_ID = amiMap[BASE_VERSION]
+                            env.AMI_ID = myMap[BASE_VERSION].AMI
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                             echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                            env.AMI_ID = amiId
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
@@ -114,7 +99,7 @@ pipeline {
                 }
             }
         }
-    } 
+    }    
     post {
         always {
             script {
