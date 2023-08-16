@@ -41,15 +41,6 @@ pipeline {
                      stage('Fetch AMI') {
                         steps {
                             script {
-                               /* def amiMap = [
-                                    '11': 'ami-0f2103a4b8097a560',
-                                    '10': 'ami-07c628e683bb46bf3',
-                                    '9': 'ami-0d40cc67849b82059',
-                                    '8': 'ami-0d4a0d68ad7ea84d2',
-                                    '7': 'ami-0a45b299774e0b9bc',
-                                    '3': 'ami-0a45b299994e0b9bc'
-                                ]
-                                def amiId = amiMap[BASE_VERSION] */
                                 def amiId = amiMap[BASE_VERSION]
                                 echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
                                 // return amiId // Return amiId so it's accessible in subsequent stages
@@ -59,15 +50,14 @@ pipeline {
                     stage ('Check license') {
                         steps {
                             script {
-                                def amiId = amiMap[BASE_VERSION]
+                                env.AMI_ID = amiMap[BASE_VERSION]
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
-                                // Set the amiId as an environment variable
-                                withEnv([env.AMI_ID = amiId]) {
-                                    sh '''
-                                        pwd
-                                        echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                                    '''
+                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
+                                sh '''
+                                    pwd
+                                    # echo "Using AMI_ID in shell: \$AMI_ID"
+                                    echo "Using AMI_ID in shell: $AMI_ID"
+                                '''
                                 }
                             }
                         }
@@ -92,37 +82,12 @@ pipeline {
                 }
             }
             stages {
-                 /*stage('Fetch AMI') {
-                        steps {
-                            script {
-                                /*def amiMap = [
-                                    '11': 'ami-0f2103a4b8097a560',
-                                    '10': 'ami-07c628e683bb46bf3',
-                                    '9': 'ami-0d40cc67849b82059',
-                                    '8': 'ami-0d4a0d68ad7ea84d2',
-                                    '7': 'ami-0a45b299774e0b9bc',
-                                    '3': 'ami-0a45b299994e0b9bc'
-                                ]
-                                // def amiId = amiMap[BASE_VERSION]
-                                def amiId = amiMap[BASE_VERSION]
-                                echo "Fetching AMI for Version ${BASE_VERSION}: ${amiId}"
-                                // Set the amiId as an environment variable
-                                env.AMI_ID = amiId
-                                sh '''
-                                    pwd
-                                    # echo "Using AMI_ID in shell: \$AMI_ID"
-                                    echo "Using AMI_ID in shell: $AMI_ID"
-                                '''
-                            }
-                        }
-                }*/
                 stage ('Check license') {
                     steps {
                         script {
-                            def amiId = amiMap[BASE_VERSION]
+                            env.AMI_ID = amiMap[BASE_VERSION]
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${amiId}"
-                            env.AMI_ID = amiId
+                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
