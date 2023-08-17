@@ -37,16 +37,15 @@ pipeline {
                      stage ('Check license') {
                         steps {
                             script {
-                                AMI_ID=myMap[BASE_VERSION].AMI
+                                env.AMI_ID=myMap[BASE_VERSION].AMI
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${myMap[BASE_VERSION].MASTER_IP}"
-                                myMap[BASE_VERSION].MASTER_IP = sh(script: 'echo "192.168.1.${baseVersion}"', returnStdout: true).trim()
+                                echo "Fetching AMI for Version ${params.BASE_VERSION}: ${myMap[BASE_VERSION].AMI}"
+                                myMap[BASE_VERSION].MASTER_IP = sh(script: 'echo "192.168.1.100"', returnStdout: true).trim()
                                 echo "M-IT is: ${myMap[BASE_VERSION].MASTER_IP} "
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
-                                    echo "Using MASTER_IP in shell: ${myMap[BASE_VERSION].MASTER_IP}"
                                 '''
                                 }
                         }
@@ -71,13 +70,14 @@ pipeline {
                 }
             }
             stages {
-                stage ('Check license') {
+                 stage ('Check license') {
                     steps {
                         script {
-                            env.AMI_ID = myMap[BASE_VERSION].AMI
+                            env.AMI_ID=myMap[BASE_VERSION].AMI
                             echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
-                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                            env.AMI_ID = amiId
+                            echo "Fetching AMI for Version ${params.BASE_VERSION}: ${myMap[BASE_VERSION].AMI}"
+                            myMap[BASE_VERSION].MASTER_IP = sh(script: 'echo "192.168.1.100"', returnStdout: true).trim()
+                            echo "M-IT is: ${myMap[BASE_VERSION].MASTER_IP} "
                             sh '''
                                 pwd
                                 # echo "Using AMI_ID in shell: \$AMI_ID"
