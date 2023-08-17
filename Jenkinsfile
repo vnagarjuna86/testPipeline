@@ -1,11 +1,7 @@
 def myMap = [
-    '11': [AMI: 'ami-0f2103a4b8097a560', MASTER_IP: 'MASTER_IP_11'],
-    '10': [AMI: 'ami-07c628e683bb46bf3', MASTER_IP: 'MASTER_IP_10'],
-    '9': [AMI: 'ami-0d40cc67849b82059', MASTER_IP: 'MASTER_IP_9'],
-    '8': [AMI: 'ami-0d4a0d68ad7ea84d2', MASTER_IP: 'MASTER_IP_8'],
-    '7': [AMI: 'ami-0a45b299774e0b9bc', MASTER_IP: 'MASTER_IP_7'],
-    '3': [AMI: 'ami-0a45b299994e0b9bc', MASTER_IP: 'MASTER_IP_3']
-]
+    '11': [AMI: 'ami-0f2103a4b8097a560', MASTER_IP: '', WORKER_IPS: 'WORKER_IPS_11', VER: '11'],
+    '10': [AMI: 'ami-07c628e683bb46bf3', MASTER_IP: '', WORKER_IPS: 'WORKER_IPS_10', VER: '10']
+    ]
 
 pipeline {
     agent any
@@ -41,16 +37,15 @@ pipeline {
                      stage ('Check license') {
                         steps {
                             script {
-                                env.AMI_ID = myMap[BASE_VERSION].AMI
+                                AMI_ID = myMap[BASE_VERSION].AMI
                                 echo "Running Perform promotion steps or other steps ${BASE_VERSION}"
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${AMI_ID}"
-                                env.MASTER_IP = myMap[BASE_VERSION].MASTER_IP
-                                env.MASTER_IP = sh(script: 'echo "192.168.1.${baseVersion}"', returnStdout: true).trim()
+                                myMap[BASE_VERSION].MASTER_IP = sh(script: 'echo "192.168.1.${baseVersion}"', returnStdout: true).trim()
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
-                                    echo "Using MASTER_IP in shell: $MASTER_IP"
+                                    echo "Using MASTER_IP in shell: ${myMap[BASE_VERSION].MASTER_IP}"
                                 '''
                                 }
                         }
