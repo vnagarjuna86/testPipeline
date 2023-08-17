@@ -46,6 +46,7 @@ pipeline {
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
                                     echo "Using AMI_ID in shell: $AMI_ID"
+                                    echo "MIP is 'myMap[BASE_VERSION].MASTER_IP' "
                                 '''
                                 }
                         }
