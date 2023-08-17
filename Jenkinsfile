@@ -42,7 +42,7 @@ pipeline {
                                 echo "Fetching AMI for Version ${params.BASE_VERSION}: ${myMap[BASE_VERSION].AMI}"
                                 myMap[BASE_VERSION].MASTER_IP = sh(script: 'echo "192.168.1.100"', returnStdout: true).trim()
                                 echo "M-IT is: ${myMap[BASE_VERSION].MASTER_IP} "
-                                MIP =  myMap[BASE_VERSION].MASTER_IP
+                                MIP =  ${myMap[BASE_VERSION].MASTER_IP}
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
