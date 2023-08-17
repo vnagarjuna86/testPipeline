@@ -9,7 +9,7 @@ pipeline {
     parameters {
         choice(
             name: 'BASE_VERSION',
-            choices: ["ALL", "11", "10", "9", "8", "7", "3"],
+            choices: ["ALL", "11", "10"],
             description: 'Select base version(s) to trigger'
         )
         booleanParam(
@@ -30,7 +30,7 @@ pipeline {
                 axes {
                     axis {
                         name 'BASE_VERSION'
-                        values '11', '10', '9', '8', '7', '3'
+                        values '11', '10'
                     }
                 }
                 stages {
