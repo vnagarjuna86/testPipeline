@@ -43,7 +43,7 @@ pipeline {
                                 sh '''
                                     pwd
                                     # echo "Using AMI_ID in shell: \$AMI_ID"
-                                    echo "Using AMI_ID in shell: ${myMap[BASE_VERSION].MASTER_IP}"
+                                    echo "Using AMI_ID in shell: myMap[BASE_VERSION].AMI"
                                     echo "Using MASTER_IP in shell: ${myMap[BASE_VERSION].MASTER_IP}"
                                 '''
                                 }
